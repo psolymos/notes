@@ -1,12 +1,6 @@
-% High Performance Computing with Westgrid: a gentle into for ecologists
-% Peter Solymos (solymos@ualberta.ca)
-% August 12, 2013 (version 2)
+# High Performance Computing with Westgrid: a gentle into for ecologists
 
-
-
-
-Introduction
-============
+## Introduction
 
 We often face 'embarrassingly parallel problems' when using computer intensive
 approaches, such as bootstrap and MCMC, or doing simulations.
@@ -26,11 +20,9 @@ system on Westgrid, as specification of Jasper fit what I am doing
 (most importantly it has R and JAGS with quite recent versions,
 and it has support for MPI through Rmpi).
 
-Toy example
-===========
+## Toy example
 
-Simulation
-----------
+### Simulation
 
 Here I am considering an RSPF model and simulated data set, because
 this way I can demonstrate how to install an R package on Westgrid:
@@ -50,9 +42,7 @@ dat <- simulateUsedAvail(x, cfs, n.used, m, link = "logit")
 str(dat)
 ```
 
-
-Bootstrap example
-------------------
+### Bootstrap example
 
 On a single machine it is quite common to have multiple cores
 that allows to do 2-4-8-fold parallelization depending on
@@ -76,7 +66,7 @@ rspfBootFun <- function(i) {
 ```
 
 
-### Sequential runs
+#### Sequential runs
 
 
 ```r
@@ -85,7 +75,7 @@ summary(t(sapply(1:B, rspfBootFun)))
 ```
 
 
-### Parallel runs
+#### Parallel runs
 
 
 ```r
@@ -110,16 +100,14 @@ save(dat, ids, file = "rspfdata.Rdata")
 ```
 
 
-Using Westgrid
-=====================
+## Using Westgrid
 
 We need SSH (secure shell) for logging in, and 
 SFTP/PSFTP for transferring files. 
 These come by default in Linux/Unix systems, and we need to install 
 [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/) on Windows.
 
-Passing data to Westgrid
-------------------------
+### Passing data to Westgrid
 
 Screen shots are available here:
 [http://panpalitta.wordpress.com/tag/westgrid/](http://panpalitta.wordpress.com/tag/westgrid/)
@@ -137,8 +125,7 @@ Screen shots are available here:
 * `exit` or say `bye` to close the connection.
 
 
-Logging into Westgrid
----------------------
+### Logging into Westgrid
 
 * Open PuTTY.
 * Type host name as `username@jasper.westgrid.ca`,
@@ -146,8 +133,7 @@ Logging into Westgrid
 * Navigate into the `test` directory: `cd test`,
 * see if our data file is listed, type `ls`.
 
-Running jobs through R
-----------------------
+### Running jobs through R
 
 For running R, we need to load the module by typing
 `module load application/R/3.0.0`. This loads
@@ -242,13 +228,12 @@ mpi.quit("no")
 
 Exit SSH: `exit`.
 
-Running jobs in batch mode
---------------------------
+### Running jobs in batch mode
 
 We are going to submit a job to the grid. For this we need an R scipt file,
 and another file that sets up the submission. 
 
-### Testing a sequential program
+#### Testing a sequential program
 
 First we figure out if the code runs fine in sequential mode. 
 For this, here is the R code, let's save it in a file called `stest.R`:
@@ -346,7 +331,7 @@ This is the name for the 2 output files:
 E-mail of the user if we want messages when there are problems.
 The `#PBS -m n` means no e-mail messages, 
 `#PBS -m bea` would mean that send message when the job
-**b**egins, when there is an **e**rror or when the script **a**borts:
+**b**egins, when there is an **e**nds or when the script **a**borts:
 
 ```
 #PBS -M solymos@ualberta.ca
@@ -411,7 +396,7 @@ Then wait for the results: the 2 files we specified earlier
 (`seqTest.err` end `seqTest.out`) and the R data output 
 (`rspfresults01.Rdata`).
 
-### Testing a parallel program
+#### Testing a parallel program
 
 Now it is time to use more processors and test the parallel version.
 
@@ -510,8 +495,7 @@ If the job is done, the results should appear
 (`parTest.err` end `parTest.out`, `rspfresults02.Rdata`).
 Exit status 0 in the output file `parTest.out` is a good sign.
 
-Getting back the results
-------------------------
+### Getting back the results
 
 * Open PSFTP,
 * type `open username@jasper.westgrid.ca`. Replace `username`
@@ -529,8 +513,7 @@ Getting back the results
 * Do this with any other output files.
 * `exit` or say `bye` to close the connection.
 
-Useful resources
-----------------
+### Useful resources
 
 * Screen shots for SSH and PSFTP: [http://panpalitta.wordpress.com/tag/westgrid/](http://panpalitta.wordpress.com/tag/westgrid/)
 
