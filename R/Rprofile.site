@@ -21,7 +21,7 @@ local({r <- getOption("repos")
 #  if (interactive()) 
 #    fortunes::fortune()
 
-if (.Platform$OS.type != "windows") {
+if (.Platform$OS.type == "windows") {
     Sys.setenv(R_USER="C://Users//Peter//")
     setwd("~")
 }
