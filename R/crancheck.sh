@@ -1,14 +1,32 @@
 #!/bin/bash
+
+# this file is to spare few moments when testing R packages
+# it cleans TMPDIR and clone/build/check packages one by one
+# package names are taken from args list
+
+# use it like:
+# $ sudo bash crancheck.sh pkg_1 pkg_2 ... pkg_n
+
+# for my selfish purposes:
+# $ sudo bash crancheck.sh detect pbapply ResourceSelection mefa4
+# $ sudo bash crancheck.sh sharx PVAClone dcmle dclone
+
+
+TMPDIR=~/tmpdir
+UPDATE=0
+
 if [ $# -lt 1 ]; then
     echo no arguments provided
 else {
 
-    [ -d ~/tmpdir ] && rm -r ~/tmpdir
-    mkdir ~/tmpdir
-    cd ~/tmpdir
+    [ -d $TMPDIR ] && rm -r $TMPDIR
+    mkdir $TMPDIR
+    cd $TMPDIR
 
-    echo ---------- updating R packages ----------
-    R CMD BATCH --vanilla ~/repos/notes/R/updates.R updates.Rout
+    if [ $UPDATE -gt 0 ]; then
+        echo ---------- updating R packages ----------
+        R CMD BATCH --vanilla ~/repos/notes/R/updates.R updates.Rout
+    fi
 
     for i in $@; do {
 
