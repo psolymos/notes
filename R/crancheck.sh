@@ -14,6 +14,8 @@
 
 TMPDIR=~/tmpdir
 UPDATE=0
+REPO1=psolymos
+REPO2=datacloning
 
 if [ $# -lt 1 ]; then
     echo no arguments provided
@@ -30,8 +32,16 @@ else {
 
     for i in $@; do {
 
+        REPO=$REPO1
+        if [ $i = 'dclone' ]; then
+            REPO=$REPO2
+        fi
+        if [ $i = 'dcmle' ]; then
+            REPO=$REPO2
+        fi
+
         echo ---------- clone R package $i ----------
-        git clone https://github.com/psolymos/$i
+        git clone https://github.com/$REPO/$i
 
         echo ---------- build R package $i ----------
         R CMD build $i
