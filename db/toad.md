@@ -22,3 +22,8 @@ in the 'Project Manager' tab. Follow these steps:
 * Select 'Views' from the dropdown below.
 * Click any views to open it up, and see the table under the 'Data' tab.
 * There is an 'Export Data' icon for exporting.
+ 
+## What to do when Toad cannot find valid Oracle client?
+
+Make sure that `oci.dll` is in the path.
+
