@@ -32,6 +32,9 @@ else {
 
     for i in $@; do {
 
+        echo ---------- useing temp dir $TMPDIR ----------
+        cd $TMPDIR
+
         REPO=$REPO1
         if [ $i = 'dclone' ]; then
             REPO=$REPO2
@@ -49,12 +52,10 @@ else {
         echo ---------- check R package $i ----------
         R CMD check $i_*.tar.gz --as-cran
 
+        cd $TMPDIR
+
     }
     done
     echo done
 }
 fi
-
-
-
-
