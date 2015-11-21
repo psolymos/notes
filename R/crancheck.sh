@@ -13,7 +13,7 @@
 
 
 TMPDIR=~/tmpdir
-UPDATE=1
+UPDATE=0
 REPO1=psolymos
 REPO2=datacloning
 
@@ -32,9 +32,6 @@ else {
 
     for i in $@; do {
 
-        echo ---------- useing temp dir $TMPDIR ----------
-        cd $TMPDIR
-
         REPO=$REPO1
         if [ $i = 'dclone' ]; then
             REPO=$REPO2
@@ -43,17 +40,17 @@ else {
             REPO=$REPO2
         fi
 
-        echo ---------- clone R package $i ----------
+        echo ---------- cloneing R package $i ----------
         git clone https://github.com/$REPO/$i
 
-        echo ---------- build R package $i ----------
-        R CMD build $i
+        echo ---------- building R package $i ----------
+        R CMD build $i --compact-vignettes
 
-        echo ---------- check R package $i ----------
-        R CMD check $i'_*.tar.gz --as-cran'
-
-        cd $TMPDIR
-
+    }
+    done
+    for f in ls *.tar.gz; do {
+        echo ---------- building R package from file $f ----------
+        R CMD check $f --as-cran
     }
     done
     echo done
