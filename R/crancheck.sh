@@ -13,7 +13,7 @@
 
 
 TMPDIR=~/tmpdir
-UPDATE=0
+UPDATE=1
 REPO1=psolymos
 REPO2=datacloning
 
