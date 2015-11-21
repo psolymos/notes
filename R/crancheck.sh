@@ -40,7 +40,7 @@ else {
             REPO=$REPO2
         fi
 
-        echo ---------- cloneing R package $i ----------
+        echo ---------- cloning R package $i ----------
         git clone https://github.com/$REPO/$i
 
         echo ---------- building R package $i ----------
@@ -48,7 +48,7 @@ else {
 
     }
     done
-    for f in ls *.tar.gz; do {
+    for f in *.tar.gz; do {
         echo ---------- building R package from file $f ----------
         R CMD check $f --as-cran
     }
