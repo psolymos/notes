@@ -50,7 +50,7 @@ else {
         R CMD build $i
 
         echo ---------- check R package $i ----------
-        R CMD check $i_*.tar.gz --as-cran
+        R CMD check $i'_*.tar.gz --as-cran'
 
         cd $TMPDIR
 
