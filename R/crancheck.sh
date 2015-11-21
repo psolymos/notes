@@ -53,6 +53,6 @@ else {
         R CMD check $f --as-cran
     }
     done
-    echo done
+    echo ---------- done ----------
 }
 fi
