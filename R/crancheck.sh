@@ -49,7 +49,7 @@ else {
     }
     done
     for f in *.tar.gz; do {
-        echo ---------- building R package from file $f ----------
+        echo ---------- checking R package from file $f ----------
         R CMD check $f --as-cran
     }
     done
