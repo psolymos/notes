@@ -13,7 +13,7 @@
 
 # set a CRAN mirror
 local({r <- getOption("repos")
-      r["CRAN"] <- "http://cran.stat.sfu.ca/"
+      r["CRAN"] <- "https://cran.r-project.org/"
       options(repos=r)})
 
 # Give a fortune cookie, but only to interactive sessions
