@@ -6,7 +6,8 @@ pkglist <- c("mefa", "mefa4", "vegan", "rgl", "mgcv", "scatterplot3d",
     "R2OpenBUGS", "RODBC", "rgdal", "raster", "sp", "epiR", "plotrix",
     "reshape", "simba", "labdsv", "Hmisc", "untb", "ggplot2",
     "ineq", "pscl", "rpart", "gbm", "glmnet", "knitr", "ellipse",
-    "betareg", "pROC", "unmarked", "forecast", "labdsv", "untb")
+    "betareg", "pROC", "unmarked", "forecast", "labdsv", "untb",
+    "devtools")
 
 (toInst <- setdiff(pkglist, rownames(installed.packages())))
 
