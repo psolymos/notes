@@ -21,7 +21,7 @@ For me these are:
 
 1. ABMI (driven by workplanning)
 2. BAM (driven by workplanning)
-3. Collaborations (*ad hoc* stuff that one can call it professional development)
+3. Collaborations (*ad hoc* stuff that one can call professional development)
 4. Consuilting (out-of-working-hours income generating side projects)
 
 ### Rows
