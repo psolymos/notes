@@ -27,7 +27,7 @@ For me these are:
 ### Rows
 
 There are 40 rows on both pages. Rows are for individual tasks.
-The 5 robric in the left hand side are for daily toto lists.
+The 5 rubric in the left hand side are for daily toto lists.
 The top of the paper gets the start date of the week for sorting.
 The bottom of the sheet can be used for anything (it says tasks for the week).
 I usually highlight important but not urgent tasks there as a reminder
