@@ -1,0 +1,44 @@
+project.skeleton <- 
+function(name="project", path="~/repos",...)
+{
+    foo <- function(x) x
+    dat <- data.frame(x=1)
+    package.skeleton(name = name, list=c("dat","foo"), path = path, force = FALSE)
+    file.remove(file.path(path, name, "Read-and-delete-me"))
+    writeLines(paste0("# ", name, "\n\nWrite something about the ",
+        name, " project here.\n"),
+        file.path(path, name, "README.md"))
+    writeLines(c("# No PDF/html/doc unless exceptions", "*.pdf", "*.doc", "*.docx", 
+        "*.htm", "*.html", "", "# Windows image file caches", "Thumbs.db", 
+        "ehthumbs.db", "", "# Folder config file", "Desktop.ini", "", 
+        "# Recycle Bin used on file shares", "$RECYCLE.BIN/", "", "# Windows Installer files", 
+        "*.cab", "*.msi", "*.msm", "*.msp", "", "# Windows shortcuts", 
+        "*.lnk", "", "# =========================", "# Operating System Files", 
+        "# =========================", "", "# OSX", "# =========================", 
+        "", ".DS_Store", ".AppleDouble", ".LSOverride", "", "# Thumbnails", 
+        "._*", "", "# Files that might appear on external disk", ".Spotlight-V100", 
+        ".Trashes", "", "# Directories potentially created on remote AFP share", 
+        ".AppleDB", ".AppleDesktop", "Network Trash Folder", "Temporary Items", 
+        ".apdisk", "", "## R related files", "*.Rdata", "*.Rhistory"),
+        file.path(path, name, ".gitignore"))
+    writeLines(c("extras", "inst/doc", "\\.md", ".git*", ".DS_Store", ".*~", 
+        ".travis.yml"),
+        file.path(path, name, ".Rbuildignore"))
+    writeLines(c("language: r", "sudo: required"),
+        file.path(path, name, ".travis.yml"))
+    writeLines(c("# Auto detect text files and perform LF normalization", "* text=auto", 
+        "", "# Custom for Visual Studio", "*.cs     diff=csharp", "", 
+        "# Standard to msysgit", "*.doc    diff=astextplain", "*.DOC    diff=astextplain", 
+        "*.docx   diff=astextplain", "*.DOCX   diff=astextplain", "*.dot    diff=astextplain", 
+        "*.DOT    diff=astextplain", "*.pdf    diff=astextplain", "*.PDF    diff=astextplain", 
+        "*.rtf    diff=astextplain", "*.RTF    diff=astextplain"),
+        file.path(path, name, ".gitattributes"))
+    invisible(NULL)
+}
+
+## usage
+if (FALSE) {
+
+project.skeleton("project_007")
+
+}
