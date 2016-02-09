@@ -3,7 +3,10 @@ function(name="project", path="~/repos",...)
 {
     foo <- function(x) x
     dat <- data.frame(x=1)
-    package.skeleton(name = name, list=c("dat","foo"), path = path, force = FALSE)
+    e <- list2env(list(dat=dat, foo=foo))
+    package.skeleton(name = name, list=c("dat","foo"), 
+        environment=e,
+        path = path, force = FALSE)
     file.remove(file.path(path, name, "Read-and-delete-me"))
     writeLines(paste0("# ", name, "\n\nWrite something about the ",
         name, " project here.\n"),
@@ -33,6 +36,7 @@ function(name="project", path="~/repos",...)
         "*.DOT    diff=astextplain", "*.pdf    diff=astextplain", "*.PDF    diff=astextplain", 
         "*.rtf    diff=astextplain", "*.RTF    diff=astextplain"),
         file.path(path, name, ".gitattributes"))
+    cat("...oops, Read-and-delete-me is deleted...\n")
     invisible(NULL)
 }
 
