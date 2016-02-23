@@ -529,3 +529,16 @@ Exit status 0 in the output file `parTest.out` is a good sign.
 
 * General westgrid tutorial: [http://www.sfu.ca/\~mawerder/geeks/westgrid.html](http://www.sfu.ca/~mawerder/geeks/westgrid.html)
 
+### Strategy
+
+Have 2 pbs files:
+
+* one with a relatively modest workload (small number of nodes, say 5; and short walltime, say 5 hours),
+* and one with larger workload (e.g. 10 nodes, 12--24 hours walltime).
+ 
+Set up check points in the code (e.g. I use `/results` directory to store output, this is scanned before each run and
+the subset is determined by excluding finished jobs).
+
+One of the pbs files should call the code so that remaining jobs are listed in reverse. Thus I can backfill using the small workload (it is running whnever there is an opening). The bigger workload can start working backwards on the outstanding pieces.
+
+This setup makes sure that workload is distributed more efficiently. I don't have numbers to back this up (e.g. backfill vs. double workload will finish -- depends on other users and priorities etc).
