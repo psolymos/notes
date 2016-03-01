@@ -27,7 +27,7 @@ function(name="project", path="~/repos",...)
         ".Rproj.user*", ".Rproj.user"),
         file.path(path, name, ".gitignore"))
     writeLines(c("extras", "inst/doc", "\\.md", ".git*", ".DS_Store", ".*~",
-        ".travis.yml", "^.*\\.Rproj$", "^\\.Rproj\.user$"),
+        ".travis.yml", "^.*\\.Rproj$", "^\\.Rproj\\.user$"),
         file.path(path, name, ".Rbuildignore"))
     writeLines(c("language: r", "sudo: required"),
         file.path(path, name, ".travis.yml"))
