@@ -5,7 +5,7 @@
 # package names are taken from args list
 
 # use it like:
-# $ sudo bash crancheck.sh pkg_1 pkg_2 ... pkg_n
+# $ sudo bash ~/repos/notes/R/crancheck.sh pkg_1 pkg_2 ... pkg_n
 
 # for my selfish purposes:
 # $ sudo bash crancheck.sh detect pbapply ResourceSelection mefa4
