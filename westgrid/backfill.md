@@ -25,3 +25,10 @@ https://www.westgrid.ca/files/webfm/seminar_docs/2011/siegert-20111116.pdf
 * `showq -b` lists blocked jobs
 * `checkjob -v <jobid>` indicates the problem of the blocked job
  
+## Useful Linux commands
+
+* `ls <directory> -1 | wc -l` counts number of files in directory
+* `cat <filename>` or `less <filename>` is handy to look at `.out` or `.err` files (`less` can paginate long output)
+
+Additional resources at [LinuxJourney](https://linuxjourney.com/lesson/the-shell)
+ 
