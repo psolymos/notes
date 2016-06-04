@@ -14,6 +14,7 @@ https://www.westgrid.ca/files/webfm/seminar_docs/2011/siegert-20111116.pdf
 * `qsub <pbsfile>` submit a job
 * `qdel <jobid>` delete a job
 * `showq -u <username>` list jobs
+* `qstat -u <username>` list info about jobs
 
 ## Diagnostics
 
