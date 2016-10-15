@@ -17,6 +17,9 @@ UPDATE=0
 REPO1=psolymos
 REPO2=datacloning
 
+# exclude tests when those take too long for CRAN submission
+RUNTEST=0
+
 if [ $# -lt 1 ]; then
     echo no arguments provided
 else {
@@ -42,6 +45,11 @@ else {
 
         echo ---------- cloning R package $i ----------
         git clone https://github.com/$REPO/$i
+
+        if [ $RUNTEST -lt 1 ]; then
+            echo ---------- tests dir removed ----------
+            rm -r -f $i/tests
+        fi
 
         echo ---------- building R package $i ----------
         R CMD build $i --compact-vignettes
