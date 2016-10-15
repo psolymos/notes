@@ -14,6 +14,7 @@ https://www.westgrid.ca/files/webfm/seminar_docs/2011/siegert-20111116.pdf
 * `qsub <pbsfile>` submit a job
 * `qdel <jobid>` delete a job
 * `showq -u <username>` list jobs
+* `qstat -u <username>` list info about jobs
 
 ## Diagnostics
 
@@ -23,4 +24,11 @@ https://www.westgrid.ca/files/webfm/seminar_docs/2011/siegert-20111116.pdf
 * `showq -i` gives rank in input queue
 * `showq -b` lists blocked jobs
 * `checkjob -v <jobid>` indicates the problem of the blocked job
+ 
+## Useful Linux commands
+
+* `ls <directory> -1 | wc -l` counts number of files in directory
+* `cat <filename>` or `less <filename>` is handy to look at `.out` or `.err` files (`less` can paginate long output)
+
+Additional resources at [LinuxJourney](https://linuxjourney.com/lesson/the-shell)
  
