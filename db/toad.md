@@ -27,3 +27,7 @@ in the 'Project Manager' tab. Follow these steps:
 
 Make sure that `oci.dll` is in the path.
 
+## Exporting data
+
+Make sure to double quote strings when downloading, sometimes strings contain commas 
+(or other character matching the text file delimiter) and throws off the file structure.
