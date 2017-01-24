@@ -18,7 +18,7 @@ local({r <- getOption("repos")
 
 # Give a fortune cookie, but only to interactive sessions
 # (This would need the fortunes package to be installed.)
-#  if (interactive()) 
+#  if (interactive())
 #    fortunes::fortune()
 
 if (.Platform$OS.type == "windows") {
@@ -30,13 +30,13 @@ if (.Platform$OS.type == "windows") {
     if (is.null(z))
         z <- "................GO.....SNAIL.....GO..............."
     z <- sapply(1:nchar(z), function(i) substr(z, i, i))
-    Speed <- runif(1, 0.01, 0.05)
+    Speed <- 0.02
     for (i in 1:length(z)) {
         cat(z[1:i], "-@<", sep="")
+        utils::flush.console()
         Sys.sleep(Speed)
         cat("\r")
     }
     cat("\n")
 }
 if (interactive()) .snail()
-rm(.snail)
