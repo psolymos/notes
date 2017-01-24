@@ -25,3 +25,18 @@ if (.Platform$OS.type == "windows") {
     Sys.setenv(R_USER="C://Users//Peter//")
     setwd("~")
 }
+
+.snail <- function(z=NULL) {
+    if (is.null(z))
+        z <- "................GO.....SNAIL.....GO..............."
+    z <- sapply(1:nchar(z), function(i) substr(z, i, i))
+    Speed <- runif(1, 0.01, 0.05)
+    for (i in 1:length(z)) {
+        cat(z[1:i], "-@<", sep="")
+        Sys.sleep(Speed)
+        cat("\r")
+    }
+    cat("\n")
+}
+if (interactive()) .snail()
+rm(.snail)
