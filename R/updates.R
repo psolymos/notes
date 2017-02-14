@@ -2,8 +2,8 @@
 pkglist <- c(
     ## creator, maintainer
     "mefa", "mefa4", "dclone", "dcmle", "detect", "sharx",
-    "ResourceSelection", "PVAClone", "pbapply",
-    ## "QPAD", "opticut",
+    "ResourceSelection", "PVAClone", "pbapply", "opticut", "intrval",
+    ## "QPAD",
     ## author
     "vegan", "epiR", "plotrix", "adegenet",
     ## user
@@ -13,7 +13,7 @@ pkglist <- c(
     "reshape", "simba", "labdsv", "Hmisc", "untb", "ggplot2",
     "ineq", "pscl", "rpart", "gbm", "glmnet", "knitr", "ellipse",
     "betareg", "pROC", "unmarked", "forecast", "labdsv", "untb",
-    "devtools", "testthat", "akima", "rioja", "data.table")
+    "devtools", "testthat", "akima", "rioja", "data.table", "partykit")
 
 (toInst <- setdiff(pkglist, rownames(installed.packages())))
 
