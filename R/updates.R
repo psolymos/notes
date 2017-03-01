@@ -13,7 +13,8 @@ pkglist <- c(
     "reshape", "simba", "labdsv", "Hmisc", "untb", "ggplot2",
     "ineq", "pscl", "rpart", "gbm", "glmnet", "knitr", "ellipse",
     "betareg", "pROC", "unmarked", "forecast", "labdsv", "untb",
-    "devtools", "testthat", "akima", "rioja", "data.table", "partykit")
+    "devtools", "testthat", "akima", "rioja", "data.table", "partykit",
+    "mvtnorm", "DEoptim")
 
 (toInst <- setdiff(pkglist, rownames(installed.packages())))
 
