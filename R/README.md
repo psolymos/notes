@@ -65,10 +65,10 @@
 
 ## PVAclone
 
-![](http://cranlogs.r-pkg.org/badges/grand-total/PVAclone)
-![](http://cranlogs.r-pkg.org/badges/last-month/PVAclone)
-![](http://cranlogs.r-pkg.org/badges/last-week/PVAclone)
-![](http://cranlogs.r-pkg.org/badges/last-day/PVAclone)
+![](http://cranlogs.r-pkg.org/badges/grand-total/PVAClone)
+![](http://cranlogs.r-pkg.org/badges/last-month/PVAClone)
+![](http://cranlogs.r-pkg.org/badges/last-week/PVAClone)
+![](http://cranlogs.r-pkg.org/badges/last-day/PVAClone)
 
 ## sharx
 
