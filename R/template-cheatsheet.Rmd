@@ -1,0 +1,72 @@
+---
+title: "R Basics -- Cheatsheet"
+date: "June 15, 2017"
+author: "Peter Solymos"
+output:
+  pdf_document:
+    highlight: kate
+fontsize: 8pt
+classoption: [letterpaper,landscape,twocolumn]
+urlcolor: blue
+---
+
+### Install
+
+#### Install R
+
+Follow the instructions at the [R website](http://cran.r-project.org) to download and install
+the most up-to-date base R version suitable for your operating system (the latest R version at the time of writing these instructions is 3.3.3). $\pi=\sqrt{a}$, so `pi=sqrt(a)`.
+
+#### Install RStudio
+
+Having RStudio is not absolutely necessary, but some of our course material
+will follow a syntax that is close to RStudio's [R markdown](http://rmarkdown.rstudio.com/)
+notation, so having RStudio will make our life easier. RStudio is also available for different operating systems. Pick the open source desktop edition from [here](http://www.rstudio.com/products/rstudio/download/) (the latest RStudio Desktop version at the time of writing these instructions is 1.0.136).
+
+#### Install JAGS
+
+We will use JAGS during the course because it is robust, easy to install, and cross-paltform available. Download the latest version suitable for your operating system from [here](http://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/) (the latest JAGS version at the time of writing these instructions is 4.2).
+
+**Note**: due to recent changes in R's Windows toolchain (which impacts Windows specific installation only), pay attention to matching versions:
+
+* if you are using R 3.3.0 or later then install `JAGS-4.2.0-Rtools33.exe`,
+* if you are using R 3.2.4 or earlier then install `JAGS-4.2.0.exe`.
+
+#### R packages
+
+We will send an updated list of packages closer to the course date. Here is a useful set of packages that is quite close to what we are planning to use `x <- a`:
+
+```{r eval=FALSE}
+pkglist <- c(
+    "mefa", "mefa4", "dclone", "ResourceSelection", "pbapply", "vegan",
+    "rgl", "mgcv", "scatterplot3d", "permute", "rjags",
+    "coda", "snow", "R2WinBUGS", "rlecuyer", "Formula", "maptools",
+    "lme4", "R2OpenBUGS", "RODBC", "rgdal", "raster", "sp",
+    "reshape", "simba", "labdsv", "Hmisc", "untb", "ggplot2",
+    "pscl", "rpart", "gbm", "glmnet", "knitr", "ellipse",
+    "betareg", "pROC", "unmarked", "forecast",
+    "devtools", "akima", "data.table",
+    # additional R packages
+    "gstat", "spdep", "spatstat", "rgeos", "intrval", "MuMIn", "epiR")
+(toInst <- setdiff(pkglist, rownames(installed.packages())))
+if (length(toInst) > 0)
+    install.packages(toInst, repos="http://cran.at.r-project.org/")
+update.packages(repos="http://cran.at.r-project.org/", ask=FALSE)
+```
+
+Additionally, install the **countreg** package from R-Forge:
+
+```{r eval=FALSE}
+install.packages("countreg", repos="http://R-Forge.R-project.org")
+```
+
+#### Testing that everything works as expected
+
+Installing JAGS can be tricky, depending on operating system and version.
+Run these lines to check that it goes without error:
+
+```{r eval=FALSE}
+library(dclone)
+example("jags.fit", run.dontrun = TRUE)
+```
+
