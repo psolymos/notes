@@ -1,0 +1,64 @@
+---
+title: "Bernoulli model, Normal prior"
+runtime: shiny
+output: html_document
+layout: raw
+---
+
+```{r, echo=FALSE}
+inputPanel(
+  sliderInput("p", label = "Probability (true)",
+              min = 0, max = 1, value = 0.3, step = 0.05),
+  sliderInput("n", label = "Sample size",
+              min = 1, max = 1000, value = 10, step = 10),
+  sliderInput("mu", label = "Normal prior mean",
+              min = -10, max = 10, value = 0, step = 1),
+  sliderInput("sig2", label = "Normal prior variance",
+              min = 0.001, max = 100, value = 1, step = 10),
+  radioButtons("scale", label="Scale",
+             c("Probability (0, 1)" = "prob",
+               "Logit (-Inf, Inf)" = "logit")),
+  sliderInput("seed", label = "Random seed",
+              min = 0, max = 100, value = 0, step = 10)
+)
+renderPlot({
+    par(las = 1)
+    set.seed(input$seed)
+    y <- rbinom(n = 1000, size = 1, p = input$p)
+    pval <- seq(0.001, 0.999, by = 0.0005)
+    fLik <- function(p, y)
+        prod(dbinom(y, size = 1, prob = p))
+    fPri <- function(p, mu, sig2, scale) {
+        if (scale == "prob")
+            out <- (1/(p*(1-p))) * dnorm(qlogis(p), mu, sqrt(sig2))
+        if (scale == "logit")
+            out <- dnorm(qlogis(p), mu, sqrt(sig2))
+        out
+    }
+    Lik <- sapply(pval, fLik, y=y[1:input$n])
+    Pri <- sapply(pval, fPri, input$mu, input$sig2, input$scale)
+    Pos <- Lik * Pri
+    M <- cbind(Pri=Pri/max(Pri),
+        Lik=Lik/max(Lik),
+        Pos=Pos/max(Pos))
+    if (input$scale == "logit") {
+        p <- qlogis(input$p)
+        pval <- qlogis(pval)
+    } else {
+        p <- input$p
+    }
+    Col <- c("#cccccc", "#3498db", "#f39c12")
+    matplot(pval, M, type = "l", 
+        col=Col, lwd=2, lty=1,
+        ylab = "Density", 
+        xlab=ifelse(input$scale == "logit", "logit(p)","p"),
+        sub=paste0("Mean = ", round(mean(y[1:input$n]), 2), " (", 
+            sum(1-y[1:input$n]), " 0s & ", sum(y[1:input$n]), " 1s)"),
+        main = paste0("True value = ", round(p, 2), 
+            ", Posterior mode = ", round(pval[which.max(Pos)], 2)))
+    abline(v = p, lwd = 2, col = "#c7254e")
+    abline(v = pval[which.max(Pos)], lwd = 2, col = "#18bc9c")
+    legend("topleft",lty=1, lwd=2, col=Col, bty="n",
+           legend=c("Prior","Likelihood","Posterior"))
+})
+```

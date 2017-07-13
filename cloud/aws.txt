@@ -42,3 +42,6 @@ sudo adduser psolymos
 
 ## on CC-could, use c2-7.5gb-92 flavour w/ 14.04 Ubuntu
 ## set floating IP, allow SSH (22) and port 80
+
+## use sftp -i .ssh/<KEY> ubuntu@<ADDRESS> and move apps/files
+## to /srv/shiny-server/
