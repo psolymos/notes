@@ -45,3 +45,14 @@ sudo adduser psolymos
 
 ## use sftp -i .ssh/<KEY> ubuntu@<ADDRESS> and move apps/files
 ## to /srv/shiny-server/
+
+## ! not quite working as it is, might need 16.04
+
+## opencpu (Ubuntu 14.04 uses opencpu-1.5)
+sudo add-apt-repository -y ppa:opencpu/opencpu-1.5
+sudo apt-get update
+sudo apt-get upgrade
+
+# Installs OpenCPU server
+sudo apt-get install -y opencpu-server
+# Done! Open http://yourhost/ocpu in your browser
