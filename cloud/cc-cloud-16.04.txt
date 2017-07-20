@@ -1,0 +1,74 @@
+## CC-Cloud log
+
+## on CC-could, use c2-7.5gb-92 flavour w/ 16.04.2 Ubuntu
+## set floating IP
+## allow SSH on port 22
+## need to open port 80
+## port 8787 for Shiny and 3838 for RStudio
+
+sudo apt-get dist-upgrade
+sudo apt-get upgrade
+
+## install base R
+## need sudo >> as well, not only sudo echo
+sudo -i
+echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" >> /etc/apt/sources.list
+exit
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+sudo apt-get update
+sudo apt-get install r-base
+
+## OpenCPU installation
+# Requires Ubuntu 16.04 (Xenial)
+sudo add-apt-repository -y ppa:opencpu/opencpu-2.0
+sudo apt-get update
+sudo apt-get upgrade
+
+# Installs OpenCPU server
+sudo apt-get install -y opencpu-server
+# Done! Open http://yourhost/ocpu in your browser
+
+# Optional: installs rstudio in http://yourhost/rstudio
+sudo apt-get install -y rstudio-server
+
+## need to add user for RStudio login
+sudo adduser psolymos
+#etc
+
+sudo apt-get install -y \
+    pandoc \
+    pandoc-citeproc \
+    libssl-dev \
+    libcurl4-gnutls-dev \
+    libcairo2-dev \
+    libgdal-dev \
+    libgeos-dev \
+    libproj-dev \
+    libxml2-dev \
+    libxt-dev \
+    libv8-dev \
+    git
+
+## install R packages
+sudo su - -c "R -e \"install.packages('shiny', repos='https://cran.rstudio.com/')\""
+sudo su - -c "R -e \"install.packages('rmarkdown', repos='http://cran.rstudio.com/')\""
+sudo su - -c "R -e \"install.packages(c('rgeos','rgdal','raster','sp','spdep','gstat','geoR','spatstat','mefa4'), repos='http://cran.rstudio.com/')\""
+sudo su - -c "R -e \"install.packages(c('vegan','ResourceSelection','detect','intrval','opticut','pbapply'), repos='http://cran.rstudio.com/')\""
+
+## JAGS
+sudo apt-get install jags
+sudo su - -c "R -e \"install.packages(c('rjags', 'dclone'), repos='https://cran.rstudio.com/')\""
+
+## nginx not needed, OpenCPU uses Apache2
+#sudo apt-get update
+#sudo apt-get -y install nginx
+#sudo service nginx start
+
+## install shiny-server
+sudo apt-get -y install gdebi-core
+wget https://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.5.3.838-amd64.deb
+sudo gdebi shiny-server-1.5.3.838-amd64.deb
+
+## need only if not grabbed from OpenCPU site
+#wget https://download2.rstudio.org/rstudio-server-1.0.143-amd64.deb
+#sudo gdebi rstudio-server-1.0.143-amd64.deb
