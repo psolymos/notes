@@ -72,3 +72,8 @@ sudo gdebi shiny-server-1.5.3.838-amd64.deb
 ## need only if not grabbed from OpenCPU site
 #wget https://download2.rstudio.org/rstudio-server-1.0.143-amd64.deb
 #sudo gdebi rstudio-server-1.0.143-amd64.deb
+
+## add jekyll to the mix
+sudo apt-get update
+sudo apt-get install ruby ruby-dev make gcc
+sudo gem install jekyll bundler
