@@ -79,3 +79,10 @@ sudo gdebi shiny-server-1.5.3.838-amd64.deb
 sudo apt-get update
 sudo apt-get install ruby ruby-dev make gcc
 sudo gem install jekyll bundler
+
+## for sf and interactive maps
+sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+sudo apt-get update
+sudo apt-get install libgdal-dev libgeos-dev libproj-dev libudunits2-dev liblwgeom-dev
+
+sudo su - -c "R -e \"install.packages(c('viridis','leaflet','maptools','mapedit','mapview','sf','shinythemes','DT','markdown'), repos='http://cran.rstudio.com/')\""
