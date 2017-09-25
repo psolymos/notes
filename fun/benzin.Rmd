@@ -1,0 +1,193 @@
+---
+title: "Gas Stuff"
+output: pdf_document
+---
+
+## Intro
+
+I want to use historical gas prices so that I can simulate customer behaviour and
+test what strategy leads to greatest savings.
+
+## Data
+
+Found historical gas prices (CAN c/L) from the Edmonton (AB) area at
+[edmontongasprices.com](http://www.edmontongasprices.com/retail_price_chart.aspx).
+
+Digitized the 1-year chart (2016-09-25, 2017-09-25) using
+[Plot Digitizer, 2.6.8](http://plotdigitizer.sourceforge.net/).
+Used linear interpolation to get daily prices in CAN/L.
+
+```{r data,echo=FALSE}
+x <- read.csv("~/repos/notes/fun/gas-prices.csv")
+fun <- approxfun(x$days, x$gasprice, method = "linear")
+z <- data.frame(day=1:365, price=fun(1:365)/100)
+n <- nrow(z)
+summary(z)
+plot(z, type="l")
+```
+
+## Strategies
+
+Define some constants:
+
+* Tank volume in L: `vol`
+* Mileage in L/100km: `mil`
+* Avg distance per day: `dis`
+
+```{r const}
+vol <- 60
+mil <- 9.6
+dis <- 50
+LperD <- mil*dis/100 # average L/day
+```
+
+### Scenario 1: Go until empty
+
+Refill only when low gas indicator light comes on (we ignore the few litres there, but one can adjust tank volume accordingly)
+
+
+```{r scen1}
+z1 <- z # copy for scenario 1
+z1$refill <- FALSE # indicates decision to refill
+z1$refill[1] <- TRUE
+z1$distance <- 0
+z1$level <- vol # gas in tank in L
+z1$cost <- 0
+for (i in 2:n) {
+    z1$distance[i] <- z1$distance[i-1] + dis
+    doRefill <- z1$level[i-1] - LperD < 0
+    if (doRefill) { # refill
+        z1$level[i] <- z1$level[i-1] - LperD
+        z1$refill[i] <- TRUE
+        z1$cost[i] <- ceiling(100 * z1$price[i] * (vol - z1$level[i]))/100
+        z1$level[i] <- vol
+        z1$distance[i] <- 0
+    } else { # not
+        z1$level[i] <- z1$level[i-1] - LperD        
+    }
+}
+summary(z1[,-(1:2)])
+sum(z1$cost)
+plot(z, type="l")
+points(z1[z1$refill,1:2], col=2, pch=19)
+```
+
+In Scenario 1, we spent `r round(sum(z1$cost),2)` CAD in a year and stopped at the gas station `r sum(z1$refill)` times. We will use this scenario as the baseline.
+
+### Scenario 2: Fill up when cheaper
+
+Top up the tank if price is lower, keep driving until empty when price is higher.
+
+```{r scen2}
+z2 <- z # copy for scenario 2
+z2$refill <- FALSE # indicates decision to refill
+z2$refill[1] <- TRUE
+z2$distance <- 0
+z2$level <- vol # gas in tank in L
+z2$cost <- 0
+for (i in 2:n) {
+    z2$distance[i] <- z2$distance[i-1] + dis
+    doRefill1 <- z2$level[i-1] - LperD < 0
+    doRefill2 <- z2$price[i-1] > z2$price[i]
+    if (doRefill1 || doRefill2) { # refill
+        z2$level[i] <- z2$level[i-1] - LperD 
+        z2$refill[i] <- TRUE
+        z2$cost[i] <- ceiling(100 * z2$price[i] * (vol - z2$level[i]))/100
+        z2$level[i] <- vol
+        z2$distance[i] <- 0
+    } else { # not
+        z2$level[i] <- z2$level[i-1] - LperD        
+    }
+}
+summary(z2[,-(1:2)])
+sum(z2$cost)
+sum(z2$cost) - sum(z1$cost)
+plot(z, type="l")
+points(z2[z2$refill,1:2], col=4, pch=19)
+points(z1[z1$refill,1:2], col=2, pch=19)
+legend("topleft", bty="n", pch=19, col=c(2,4), 
+    legend=paste("Scenario", 1:2))
+```
+
+In Scenario 2, we spent `r round(sum(z2$cost),2)` CAD in a year,
+saved `r round(sum(z2$cost) - sum(z1$cost), 2)` CAD relative to Scenario 1. For this we had to
+stop at the gas station `r sum(z2$refill)` times,
+which is `r round(sum(z2$refill)/sum(z1$refill), 1)` times more than under Scenario 1.
+
+### Scenario 3: Don't want to fill up every day
+
+Micro fill-ups can save money, but it is boring to check the prices every day and stop at the gas station. Is there a threshold in terms of number of days since fill-up (which relates to amount of gas missing from the tank under average calculations)?
+
+```{r scen3}
+fun_limit <- function(Limit=1) {
+    z$refill <- FALSE # indicates decision to refill
+    z$refill[1] <- TRUE
+    z$distance <- 0
+    z$level <- vol # gas in tank in L
+    z$cost <- 0
+    z$dsf <- 0
+    for (i in 2:n) {
+        z$distance[i] <- z$distance[i-1] + dis
+        doRefill1 <- z$level[i-1] - LperD < 0
+        z$dsf[i] <- z$day[i] - z$day[rev(which(z$refill))[1]]
+        doRefill2 <- z$price[i-1] > z$price[i] && z$dsf[i] > Limit
+        if (doRefill1 || doRefill2) { # refill
+            z$level[i] <- z$level[i-1] - LperD
+            z$refill[i] <- TRUE
+            z$cost[i] <- z$price[i] * (vol - z$level[i])
+            z$level[i] <- vol
+            z$distance[i] <- 0
+        } else { # not
+            z$level[i] <- z$level[i-1] - LperD        
+        }
+    }
+    z
+}
+Limit <- 0:14
+res <- lapply(Limit, fun_limit)
+Savings <- sapply(res, function(z) sum(z$cost) - sum(z1$cost))
+Times <- sapply(res, function(z) sum(z$refill) / sum(z1$refill))
+plot(Limit, Savings, type="l")
+abline(h=0, lty=2)
+plot(Limit, Times, type="l")
+abline(h=1, lty=2)
+```
+
+It looks like the micro-filling strategy pays off, whereas
+not sticking to the rule of **fill up when it's cheaper** 
+leads to much smaller savings.
+
+```{r scen4}
+fun_pricediff <- function(pricediff=0.01) {
+    z$refill <- FALSE # indicates decision to refill
+    z$refill[1] <- TRUE
+    z$distance <- 0
+    z$level <- vol # gas in tank in L
+    z$cost <- 0
+    z$dsf <- 0
+    for (i in 2:n) {
+        z$distance[i] <- z$distance[i-1] + dis
+        doRefill1 <- z$level[i-1] - LperD < 0
+        z$dsf[i] <- z$day[i] - z$day[rev(which(z$refill))[1]]
+        doRefill2 <- (1-pricediff)*z$price[i-1] > z$price[i]
+        if (doRefill1 || doRefill2) { # refill
+            z$level[i] <- z$level[i-1] - LperD
+            z$refill[i] <- TRUE
+            z$cost[i] <- z$price[i] * (vol - z$level[i])
+            z$level[i] <- vol
+            z$distance[i] <- 0
+        } else { # not
+            z$level[i] <- z$level[i-1] - LperD        
+        }
+    }
+    z
+}
+Diff <- 1:10/100
+res2 <- lapply(Diff, fun_pricediff)
+Savings2 <- sapply(res2, function(z) sum(z$cost) - sum(z1$cost))
+Times2 <- sapply(res2, function(z) sum(z$refill) / sum(z1$refill))
+plot(Diff, Savings2, type="l")
+abline(h=0, lty=2)
+plot(Diff, Times2, type="l")
+abline(h=1, lty=2)
+```
