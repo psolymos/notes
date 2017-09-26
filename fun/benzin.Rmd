@@ -74,11 +74,11 @@ points(z1[z1$refill,1:2], col=2, pch=19)
 
 In Scenario 1, we spent `r round(sum(z1$cost),2)` CAD in a year and stopped at the gas station `r sum(z1$refill)` times. We will use this scenario as the baseline.
 
-### Scenario 2: Fill up when cheaper
+### Scenario 2: Fill up when cheaper, full when empty
 
 Top up the tank if price is lower, keep driving until empty when price is higher.
 
-```{r scen2}
+```{r scen2v1}
 z2 <- z # copy for scenario 2
 z2$refill <- FALSE # indicates decision to refill
 z2$refill[1] <- TRUE
@@ -114,11 +114,11 @@ saved `r round(sum(z2$cost) - sum(z1$cost), 2)` CAD relative to Scenario 1. For 
 stop at the gas station `r sum(z2$refill)` times,
 which is `r round(sum(z2$refill)/sum(z1$refill), 1)` times more than under Scenario 1.
 
-### Scenario 3: Don't want to fill up every day
+### Scenario 2 variations: Don't want to fill up every day
 
 Micro fill-ups can save money, but it is boring to check the prices every day and stop at the gas station. Is there a threshold in terms of number of days since fill-up (which relates to amount of gas missing from the tank under average calculations)?
 
-```{r scen3}
+```{r scen2v2}
 fun_limit <- function(Limit=1) {
     z$refill <- FALSE # indicates decision to refill
     z$refill[1] <- TRUE
@@ -157,37 +157,51 @@ It looks like the micro-filling strategy pays off, whereas
 not sticking to the rule of **fill up when it's cheaper** 
 leads to much smaller savings.
 
-```{r scen4}
-fun_pricediff <- function(pricediff=0.01) {
-    z$refill <- FALSE # indicates decision to refill
-    z$refill[1] <- TRUE
-    z$distance <- 0
-    z$level <- vol # gas in tank in L
-    z$cost <- 0
-    z$dsf <- 0
-    for (i in 2:n) {
-        z$distance[i] <- z$distance[i-1] + dis
-        doRefill1 <- z$level[i-1] - LperD < 0
-        z$dsf[i] <- z$day[i] - z$day[rev(which(z$refill))[1]]
-        doRefill2 <- (1-pricediff)*z$price[i-1] > z$price[i]
-        if (doRefill1 || doRefill2) { # refill
-            z$level[i] <- z$level[i-1] - LperD
-            z$refill[i] <- TRUE
-            z$cost[i] <- z$price[i] * (vol - z$level[i])
-            z$level[i] <- vol
-            z$distance[i] <- 0
-        } else { # not
-            z$level[i] <- z$level[i-1] - LperD        
+
+### Scenario 3: Fill up when cheaper, partially when expensive and empty
+
+Top up the tank if price is lower, keep driving until empty when price is higher but don't fill up fully.
+
+```{r scen3}
+z3 <- z # copy for scenario 2
+z3$refill <- FALSE # indicates decision to refill
+z3$refill[1] <- TRUE
+z3$distance <- 0
+z3$level <- vol # gas in tank in L
+z3$cost <- 0
+p <- 14 # fill up by p*LperD L when expensive
+for (i in 2:n) {
+    z3$distance[i] <- z3$distance[i-1] + dis
+    doRefill1 <- z3$level[i-1] - LperD < 0
+    doRefill2 <- z3$price[i-1] > z3$price[i]
+    z3$level[i] <- z3$level[i-1] - LperD
+    if (doRefill2) { # refill when cheaper
+        z3$refill[i] <- TRUE
+        z3$cost[i] <- ceiling(100 * z3$price[i] * (vol - z3$level[i]))/100
+        z3$level[i] <- vol
+        z3$distance[i] <- 0
+    } else { # not cheaper
+        if (doRefill1) {
+            z3$refill[i] <- TRUE
+            Fill <- min(vol-z3$level[i], p*LperD)
+            z3$cost[i] <- ceiling(100 * z3$price[i] * Fill)/100
+            z3$level[i] <- z3$level[i] + Fill
+            z3$distance[i] <- 0
         }
     }
-    z
 }
-Diff <- 1:10/100
-res2 <- lapply(Diff, fun_pricediff)
-Savings2 <- sapply(res2, function(z) sum(z$cost) - sum(z1$cost))
-Times2 <- sapply(res2, function(z) sum(z$refill) / sum(z1$refill))
-plot(Diff, Savings2, type="l")
-abline(h=0, lty=2)
-plot(Diff, Times2, type="l")
-abline(h=1, lty=2)
+summary(z3[,-(1:2)])
+sum(z3$cost)
+sum(z3$cost) - sum(z1$cost)
+plot(z, type="l")
+points(z3[z3$refill,1:2], col=4, pch=19)
+points(z1[z1$refill,1:2], col=2, pch=19)
+legend("topleft", bty="n", pch=19, col=c(2,4), 
+    legend=paste("Scenario", 1:2))
 ```
+
+In Scenario 2, we spent `r round(sum(z2$cost),2)` CAD in a year,
+saved `r round(sum(z2$cost) - sum(z1$cost), 2)` CAD relative to Scenario 1. For this we had to
+stop at the gas station `r sum(z2$refill)` times,
+which is `r round(sum(z2$refill)/sum(z1$refill), 1)` times more than under Scenario 1.
+
