@@ -1,10 +1,3 @@
----
-title: "Control Charts"
-output: html_document
-runtime: shiny
----
-
-```{r echo=FALSE,warning=FALSE,error=FALSE }
 ## https://github.com/isop-phmx/GGplot-Shiny
 ## https://pharmacometrics.shinyapps.io/ggplotmydata
 
@@ -14,7 +7,7 @@ ui  <-  fluidPage(
     sidebarPanel(
       tabsetPanel(
         tabPanel("Settings",
-          fileInput("file", "Choose file to upload", 
+          fileInput("file", "Choose file to upload",
                     multiple = FALSE, accept = c("csv")),
           checkboxInput('example', 'Use Example Data'),
           hr(),
@@ -33,12 +26,12 @@ ui  <-  fluidPage(
     mainPanel(
       tabsetPanel(
         tabPanel("Plot", plotOutput("qccPlot")),
-        tabPanel('Data',  dataTableOutput("mytablex")) 
+        tabPanel('Data',  dataTableOutput("mytablex"))
       ) # tabsetPanel
     ) # mainPanel
   )
 ) # end of ui
-  
+
 
 server <-  function(input, output, session) {
     inFile <- reactive({
@@ -48,14 +41,14 @@ server <-  function(input, output, session) {
         input$file
       }
     })
-    
+
     myData <- reactive({
       if (is.null(inFile())) {
         if (input$example) {
-          read.csv("example.csv") 
+          read.csv("example.csv")
         } else {
           return(NULL)
-        } 
+        }
       } else {
         updateNumericInput(session, "x_input", NA)
         updateNumericInput(session, "y_input", NA)
@@ -71,9 +64,9 @@ server <-  function(input, output, session) {
         choices=c('None',names(myData()),
                   selected=names(myData())[1] )
         )
-    })    
-    
-    
+    })
+
+
     observe({
       updateSelectInput(
         session,
@@ -288,14 +281,14 @@ output$mytablex = renderDataTable({
         DATE <- as.POSIXct(strptime(as.character(DATE), "%d/%m/%Y"))
         PARAM <- plotdata[,input$y_input]
         TYPE <- input$type #renderPrint({ input$type })
-        p <- plot_control_chart1(DATE, PARAM, 
-            type=TYPE, 
-            n=8, 
+        p <- plot_control_chart1(DATE, PARAM,
+            type=TYPE,
+            n=8,
             nsigmas=4.5,
-            main=input$y_input, 
-            use.date=TRUE, 
-            offset=0.2, 
-            lambda=0.2, 
+            main=input$y_input,
+            use.date=TRUE,
+            offset=0.2,
+            lambda=0.2,
             sort=TRUE)
         }
       })
@@ -309,4 +302,4 @@ output$mytablex = renderDataTable({
 } # end of server
 
 shinyApp(ui = ui, server = server,  options = list(height = 1000))
-```
+
