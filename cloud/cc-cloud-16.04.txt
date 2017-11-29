@@ -85,3 +85,12 @@ sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 sudo apt-get update
 sudo apt-get install libgdal-dev libgeos-dev libproj-dev libudunits2-dev liblwgeom-dev
 sudo su - -c "R -e \"install.packages(c('viridis','leaflet','maptools','mapedit','mapview','sf','shinythemes','DT','markdown'), repos='http://cran.rstudio.com/')\""
+
+## if server denies access to app folder (temp files etc):
+## https://groups.google.com/forum/#!topic/shiny-discuss/srWETT6uL-I
+sudo chown shiny:shiny /srv/shiny-server/app_folder/
+
+## use bitbucket reo:
+cd repos/shinyapps
+git pull
+sudo cp -r * /srv/shiny-server/
