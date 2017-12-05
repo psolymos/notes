@@ -1,0 +1,114 @@
+## DO-Cloud log
+# on DO-could, use droplet (need >=2GB RAM):
+# 2 GB Memory / 30 GB Disk / TOR1 - Ubuntu 16.04.3 x64
+# set floating IP
+
+## log in using:
+# ssh -i .ssh/<private_key> root@<IP_address>
+
+## allow SSH on port 22
+## need to open port 80
+## port 8787 for Rstudio and 3838 for Shiny
+
+sudo apt-get dist-upgrade
+sudo apt-get upgrade
+
+## install base R
+# need sudo >> as well, not only sudo echo
+sudo -i
+echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" >> /etc/apt/sources.list
+exit
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+sudo apt-get update
+sudo apt-get install r-base
+
+## OpenCPU installation
+# Requires Ubuntu 16.04 (Xenial)
+sudo add-apt-repository -y ppa:opencpu/opencpu-2.0
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install -y opencpu-server
+# Done! Open http://yourhost/ocpu/ in your browser
+# http://yourhost/ should now point to Apache2 page
+
+# Optional: installs rstudio in http://yourhost/rstudio
+sudo apt-get install -y rstudio-server
+
+## usually we need to add user for RStudio login
+sudo adduser psolymos
+
+## spatial libraries and other goodies
+sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+sudo apt-get install -y \
+    pandoc \
+    pandoc-citeproc \
+    libssl-dev \
+    libcurl4-gnutls-dev \
+    libcairo2-dev \
+    libgdal-dev \
+    libgeos-dev \
+    libproj-dev \
+    libudunits2-dev \
+    libxml2-dev \
+    libxt-dev \
+    libv8-dev \
+    liblwgeom-dev \
+    git \
+    jags \
+    ruby \
+    ruby-dev \
+    make \
+    gcc
+
+## build jekyll
+sudo gem install jekyll bundler
+
+## install R packages
+#sudo su - -c "R -e \"update.packages(ask=FALSE)\"" # this is needed when upgrading
+
+## install R packages
+sudo -i # sudo
+R # start R
+
+pkglist <- c("ade4", "adegenet", "akima", "betareg",
+"coda", "d3heatmap",
+"data.table", "dclone", "dcmle", "DEoptim", "detect", "devtools",
+"DT", "ellipse", "epiR", "forecast", "Formula", "gbm", "geoR",
+"ggplot2", "ggvis", "googleVis",
+"glmnet", "gstat", "Hmisc", "ineq", "intrval",
+"knitr", "labdsv", "leaflet", "lme4", "mapedit", "maptools",
+"mapview", "markdown", "mefa", "mefa4", "mgcv", "mvtnorm", "NMF",
+"opticut", "partykit", "pbapply", "permute", "plotrix", "pROC",
+"pscl", "PVAClone", "qcc", "R2OpenBUGS", "R2WinBUGS", "raster",
+"reshape", "ResourceSelection", "rgdal", "rgeos", "rioja",
+"rjags", "rlecuyer", "rmarkdown", "RODBC", "rpart", "scatterplot3d",
+"sf", "sharx",
+"shiny", "shinydashboard", "shinyjs", "shinythemes",
+"simba", "snow", "sp",
+"spatstat", "spdep", "testthat", "unmarked", "untb", "vegan",
+"viridis")
+
+(toInst <- setdiff(pkglist, rownames(installed.packages())))
+
+if (length(toInst) > 0)
+    install.packages(toInst, repos="https://cran.rstudio.com/")
+
+q('no') # quit R
+exit # exit sudo
+
+## install shiny-server
+sudo apt-get -y install gdebi-core
+wget https://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.5.3.838-amd64.deb
+sudo gdebi shiny-server-1.5.3.838-amd64.deb
+
+## use sftp -i .ssh/<KEY> ubuntu@<ADDRESS> and move apps/files
+## to /srv/shiny-server/
+
+## use bitbucket repo:
+cd repos/shinyapps
+git pull
+sudo cp -r * /srv/shiny-server/
+
+## if server denies access to app folder (temp files etc):
+## https://groups.google.com/forum/#!topic/shiny-discuss/srWETT6uL-I
+sudo chown shiny:shiny /srv/shiny-server/<app_folder>/
