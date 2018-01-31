@@ -25,3 +25,33 @@ if (length(toInst) > 0)
 #    install.packages("Aspell", repos = "http://www.omegahat.org/R")
 
 update.packages(repos="http://cran.at.r-project.org/", ask=FALSE)
+
+## create CRAN submission email template
+
+submit_cran_template <- function(path = ".") {
+    news <- readLines(file.path(path, "NEWS.md"))
+    i <- which(startsWith(news, "##"))[1L:2L]
+    latest <- news[i[1L]:(i[2L]-1)]
+    latest <- latest[startsWith(latest, "*")]
+    descr <- read.dcf(file.path(path, "DESCRIPTION"))
+    ver <- unname(descr[1L,"Version"])
+    pkg <- unname(descr[1L,"Package"])
+    maint <- unname(descr[1L,"Maintainer"])
+    out <- c(
+        "Dear CRAN Maintainers,\n\n",
+        "This is an update (version ", ver, ") of the ",
+        pkg, " R extension package.\n\n",
+        "The package includes the following changes:\n\n",
+        paste(latest, collapse="\n"),
+        "\n\nThe package tarball passed R CMD check --as-cran ",
+        "without error/warning/note on Mac (current R), ",
+        "Linux (old, current, devel), and Windows (current, devel R).\n\n",
+        "Best wishes,\n\n",
+        maint, "\npackage maintainer")
+    out
+}
+
+cat(submit_cran_template("~/repos/mefa4"), sep="")
+cat(submit_cran_template("~/repos/dclone"), sep="")
+cat(submit_cran_template("~/repos/ResourceSelection"), sep="")
+
