@@ -32,7 +32,9 @@ submit_cran_template <- function(path = ".") {
     news <- readLines(file.path(path, "NEWS.md"))
     i <- which(startsWith(news, "##"))[1L:2L]
     latest <- news[i[1L]:(i[2L]-1)]
-    latest <- latest[startsWith(latest, "*")]
+    latest <- latest[-1]
+    latest <- latest[latest != ""]
+#    latest <- latest[startsWith(latest, "*")]
     descr <- read.dcf(file.path(path, "DESCRIPTION"))
     ver <- unname(descr[1L,"Version"])
     pkg <- unname(descr[1L,"Package"])
