@@ -25,7 +25,8 @@ if (.Platform$OS.type == "windows") {
     Sys.setenv(R_USER="C://Users//Peter//")
     setwd("~")
 }
-.exit <- function() q('no')
+.q <- structure("no", class = "quitter")
+print.quitter <- function(quitter) base::quit("no")
 
 if (FALSE) {
 .snail <- function(z=NULL) {
