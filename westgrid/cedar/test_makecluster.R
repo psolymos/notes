@@ -19,7 +19,8 @@ fun <- function(i, DATA) {
 }
 
 res <- parLapply(cl, seq_len(nodeslist), fun, DATA=x)
-save(res, "~/test/test.RData")
+save(res, file="test.RData")
 
 # Don't forget to release resources
 stopCluster(cl)
+q("no")
