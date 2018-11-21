@@ -6,6 +6,7 @@ if (interactive()) {
 } else {
     nodeslist <- unlist(strsplit(Sys.getenv("NODESLIST"), split=" "))
 }
+print(nodeslist)
 
 # Create the cluster with the nodes name. One process per count of node name.
 # nodeslist = node1 node1 node2 node2, means we are starting 2 processes on node1, likewise on node2.
@@ -18,7 +19,8 @@ fun <- function(i, DATA) {
     coef(mod)
 }
 
-res <- parLapply(cl, seq_len(nodeslist), fun, DATA=x)
+B <- 10
+res <- parLapply(cl, seq_len(B), fun, DATA=x)
 save(res, file="test.RData")
 
 # Don't forget to release resources
