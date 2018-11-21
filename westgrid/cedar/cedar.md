@@ -8,14 +8,17 @@ Latest version of R is 3.5 at the time of writing.
 Use OpenMPI version 1.10.7 which is needed to spawn processes correctly (the default MPI module 2.1.1 has a problem with that at present).
 
 ```
-module load r/3.5.0
-module load openmpi/1.10.7
+module nixpkgs/16.09
+module load gcc/7.3.0
+module load openmpi/3.1.2
+module load r/3.5.1
 ```
+
 
 ## Download latest version of Rmpi package
 
 ```
-wget https://cran.r-project.org/src/contrib/Rmpi_0.6-7.tar.gz
+wget https://cran.r-project.org/src/contrib/Rmpi_0.6-9.tar.gz
 ```
 
 ## Install Rmpi
@@ -39,10 +42,10 @@ export R_PROFILE=~/local/Rprofile.site
 Run the install command
 
 ```
-R CMD INSTALL --configure-args="--with-Rmpi-include=$EBROOTOPENMPI/include   --with-Rmpi-libpath=$EBROOTOPENMPI/lib --with-Rmpi-type='OPENMPI' " Rmpi_0.6-7.tar.gz
+R CMD INSTALL --configure-args="--with-Rmpi-include=$EBROOTOPENMPI/include   --with-Rmpi-libpath=$EBROOTOPENMPI/lib --with-Rmpi-type='OPENMPI' " Rmpi_0.6-9.tar.gz
 ```
 
-If all went well, remove the tar file: `rm Rmpi_0.6-7.tar.gz`
+If all went well, remove the tar file: `rm Rmpi_0.6-9.tar.gz`
 
 Now start R in interactive mode: type `R` and hit enter.
 
