@@ -15,7 +15,7 @@ pkglist <- c(
     "betareg", "pROC", "unmarked", "forecast", "labdsv", "untb",
     "devtools", "testthat", "akima", "rioja", "data.table", "partykit",
     "mvtnorm", "DEoptim",
-    "DBI", "RSQLite", "jsonlite", "opencpu", "shiny")
+    "DBI", "RSQLite", "jsonlite", "opencpu", "shiny", "rgeos")
 
 (toInst <- setdiff(pkglist, rownames(installed.packages())))
 
