@@ -58,3 +58,14 @@ cat(submit_cran_template("~/repos/mefa4"), sep="")
 cat(submit_cran_template("~/repos/dclone"), sep="")
 cat(submit_cran_template("~/repos/ResourceSelection"), sep="")
 
+## spelling
+library(spelling)
+library(hunspell)
+check_spelling <- function(x)
+    sort(unique(unlist(hunspell(readLines(x), format = "html"))))
+
+spell_check_package("~/repos/dcmle")
+
+check_spelling("~/repos/dcmle/README.md")
+check_spelling("~/repos/dcmle/NEWS.md")
+
