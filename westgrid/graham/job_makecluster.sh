@@ -16,4 +16,6 @@ module load r/3.5.1
 # Export the nodes names. 
 # If all processes are allocated on the same node, NODESLIST contains : node1 node1 node1 node1
 export NODESLIST=$(echo $(srun hostname))
-R -f test_makecluster.R
+Rscript --vanilla test_makecluster.R 100
+
+echo done

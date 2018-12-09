@@ -3,10 +3,13 @@ library(parallel)
 # Create an array from the NODESLIST environnement variable
 if (interactive()) {
     nodeslist <- 2
+    args <- NULL
 } else {
     nodeslist <- unlist(strsplit(Sys.getenv("NODESLIST"), split=" "))
+    args <- commandArgs(trailingOnly = TRUE)
 }
 print(nodeslist)
+print(args)
 
 # Create the cluster with the nodes name. One process per count of node name.
 # nodeslist = node1 node1 node2 node2, means we are starting 2 processes on node1, likewise on node2.
@@ -19,7 +22,9 @@ fun <- function(i, DATA) {
     coef(mod)
 }
 
-B <- 10
+B <- if (interactive())
+    10 else as.numeric(args[1L])
+
 res <- parLapply(cl, seq_len(B), fun, DATA=x)
 save(res, file="test.RData")
 
