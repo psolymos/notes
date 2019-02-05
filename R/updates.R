@@ -69,3 +69,12 @@ spell_check_package("~/repos/dcmle")
 check_spelling("~/repos/dcmle/README.md")
 check_spelling("~/repos/dcmle/NEWS.md")
 
+library("ggplot2")
+library("dlstats")
+pkg <- c("mefa", "mefa4", "dclone", "dcmle", "detect", "sharx",
+    "ResourceSelection", "PVAClone", "pbapply", "opticut", "intrval",
+    "vegan", "epiR", "plotrix", "adegenet")
+x <- cran_stats(pkg)
+
+ggplot(x, aes(end, downloads)) +
+    geom_line() + facet_wrap(~package, scales="free_y")
