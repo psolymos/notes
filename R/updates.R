@@ -78,3 +78,6 @@ x <- cran_stats(pkg)
 
 ggplot(x, aes(end, downloads)) +
     geom_line() + facet_wrap(~package, scales="free_y")
+
+
+
