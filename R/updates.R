@@ -80,7 +80,7 @@ ggplot(x, aes(end, downloads)) +
     geom_line() + facet_wrap(~package, scales="free_y")
 
 
-+ from https://drdoane.com/clean-consistent-column-names/
+# from https://drdoane.com/clean-consistent-column-names/
 clean_names <- function(.data, unique = FALSE) {
   n <- if (is.data.frame(.data)) colnames(.data) else .data
 
