@@ -81,9 +81,10 @@ ggplot(x, aes(end, downloads)) +
 
 pkg <- "pbapply"
 x <- cran_stats(pkg)
-ggplot(x, aes(end, downloads)) + geom_line()
-
-
+rd <- devtools::revdep(pkg)
+ggplot(x[-nrow(x),], aes(end, downloads)) +
+    geom_line() + geom_smooth() +
+    labs(title=paste0(pkg, " (", length(rd), " revdeps)"))
 
 # from https://drdoane.com/clean-consistent-column-names/
 clean_names <- function(.data, unique = FALSE) {
