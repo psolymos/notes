@@ -76,13 +76,13 @@ pkg <- c("mefa", "mefa4", "dclone", "dcmle", "detect", "sharx",
     "vegan", "epiR", "plotrix", "adegenet")
 x <- cran_stats(pkg)
 
-ggplot(x, aes(end, downloads)) +
+ggplot(x[x$start < max(x$start),], aes(end, downloads)) +
     geom_line() + facet_wrap(~package, scales="free_y")
 
 pkg <- "pbapply"
 x <- cran_stats(pkg)
 rd <- devtools::revdep(pkg)
-ggplot(x[-nrow(x),], aes(end, downloads)) +
+ggplot(x[x$start < max(x$start),], aes(end, downloads)) +
     geom_line() + geom_smooth() +
     labs(title=paste0(pkg, " (", length(rd), " revdeps)"))
 
