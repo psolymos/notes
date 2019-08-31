@@ -116,3 +116,14 @@ clean_names <- function(.data, unique = FALSE) {
     n
   }
 }
+
+## inspact revdep distribution of all CRAN packages
+
+library(pbapply)
+library(parallel)
+
+pkgs <- available.packages("https://cran.rstudio.com/src/contrib/")
+
+cl <- makeCluster(4)
+nrd <- pbsapply(rownames(pkgs), function(pkg) length(devtools::revdep(pkg)), cl=cl)
+stopCluster(cl)
