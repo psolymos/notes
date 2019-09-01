@@ -127,3 +127,16 @@ pkgs <- available.packages("https://cran.rstudio.com/src/contrib/")
 cl <- makeCluster(4)
 nrd <- pbsapply(rownames(pkgs), function(pkg) length(devtools::revdep(pkg)), cl=cl)
 stopCluster(cl)
+
+
+load("~/Dropbox/Public/revdep-2019-08-30.RData")
+x <- x[order(x$nrevdep, decreasing = TRUE),]
+x$q <- 100 * rank(x$nrevdep) / nrow(x)
+
+z <- c("mefa", "mefa4", "dclone", "dcmle", "detect", "sharx",
+    "ResourceSelection", "PVAClone", "pbapply", "opticut", "intrval",
+    ## "QPAD",
+    ## author
+    "vegan", "epiR", "plotrix", "adegenet")
+x[rownames(x) %in% z,]
+
