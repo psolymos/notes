@@ -110,6 +110,16 @@
 ![](http://cranlogs.r-pkg.org/badges/last-day/opticut)
 ![](https://tinyverse.netlify.com/badge/opticut)
 
+## bSims
+
+1st published: 2019-12-20
+
+![](http://cranlogs.r-pkg.org/badges/grand-total/bSims)
+![](http://cranlogs.r-pkg.org/badges/last-month/bSims)
+![](http://cranlogs.r-pkg.org/badges/last-week/bSims)
+![](http://cranlogs.r-pkg.org/badges/last-day/bSims)
+![](https://tinyverse.netlify.com/badge/bSims)
+
 ## vegan
 
 ![](http://cranlogs.r-pkg.org/badges/grand-total/vegan?color=orange)
