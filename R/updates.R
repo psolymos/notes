@@ -73,7 +73,7 @@ library("ggplot2")
 library("dlstats")
 pkg <- c("mefa", "mefa4", "dclone", "dcmle", "detect", "sharx",
     "ResourceSelection", "PVAClone", "pbapply", "opticut", "intrval",
-    "vegan", "epiR", "plotrix", "adegenet")
+    "bSims", "vegan", "epiR", "plotrix", "adegenet")
 x <- cran_stats(pkg)
 
 ggplot(x[x$start < max(x$start),], aes(end, downloads)) +
@@ -124,12 +124,13 @@ library(parallel)
 
 pkgs <- available.packages("https://cran.rstudio.com/src/contrib/")
 
-cl <- makeCluster(4)
+cl <- makeCluster(8)
 nrd <- pbsapply(rownames(pkgs), function(pkg) length(devtools::revdep(pkg)), cl=cl)
 stopCluster(cl)
+save(nrd, pkgs, file="~/Dropbox/Public/revdep-2019-09-19.RData")
 
-
-load("~/Dropbox/Public/revdep-2019-08-30.RData")
+load("~/Dropbox/Public/revdep-2019-09-19.RData")
+x <- data.frame(pkgs, nrevdep = nrd)
 x <- x[order(x$nrevdep, decreasing = TRUE),]
 x$q <- 100 * rank(x$nrevdep) / nrow(x)
 
@@ -140,3 +141,6 @@ z <- c("mefa", "mefa4", "dclone", "dcmle", "detect", "sharx",
     "vegan", "epiR", "plotrix", "adegenet")
 x[rownames(x) %in% z,]
 
+round(100*sum(nrd==0)/length(nrd), 2)
+round(100*sum(nrd>=100)/length(nrd), 2)
+quantile(nrd, 0.99)
