@@ -12,9 +12,10 @@ pkglist <- c(
     "lme4", "R2OpenBUGS", "RODBC", "rgdal", "raster", "sp",
     "reshape", "simba", "labdsv", "Hmisc", "untb", "ggplot2",
     "ineq", "pscl", "rpart", "gbm", "glmnet", "knitr", "ellipse",
-    "betareg", "pROC", "unmarked", "forecast", "labdsv", "untb",
+    "betareg", "pROC", "unmarked", "forecast", 
     "devtools", "testthat", "akima", "rioja", "data.table", "partykit",
     "mvtnorm", "DEoptim",
+    "rmarkdown", "knitr", "htmltools", "htmlwidgets", "plotly", "remotes", "littler",
     "DBI", "RSQLite", "jsonlite", "opencpu", "shiny", "rgeos")
 
 (toInst <- setdiff(pkglist, rownames(installed.packages())))
