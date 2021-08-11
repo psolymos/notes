@@ -16,7 +16,8 @@ pkglist <- c(
     "devtools", "testthat", "akima", "rioja", "data.table", "partykit",
     "mvtnorm", "DEoptim",
     "rmarkdown", "knitr", "htmltools", "htmlwidgets", "plotly", "remotes", "littler",
-    "DBI", "RSQLite", "jsonlite", "opencpu", "shiny", "rgeos")
+    "DBI", "RSQLite", "jsonlite", "opencpu", "shiny", "rgeos",
+    "tidyverse", "httr")
 
 (toInst <- setdiff(pkglist, rownames(installed.packages())))
 
