@@ -33,7 +33,7 @@ update.packages(repos="http://cran.at.r-project.org/", ask=FALSE)
 
 submit_cran_template <- function(path = ".") {
     news <- readLines(file.path(path, "NEWS.md"))
-    i <- which(startsWith(news, "##"))[1L:2L]
+    i <- which(startsWith(news, "#"))[1L:2L]
     latest <- news[i[1L]:(i[2L]-1)]
     latest <- latest[-1]
     latest <- latest[latest != ""]
